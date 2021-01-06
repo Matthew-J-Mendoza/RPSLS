@@ -26,6 +26,7 @@ async function NextPage(url) {
 async function CPU(url) {
     let OCA = await fetch(url);
     let ocatData = await OCA.text();
+    return ocatData;
 }
 //Menu Buttons---------------------------------------------------------
 cpuBtn.addEventListener('click', function () {
@@ -115,7 +116,7 @@ function Game() {
 
                             break;
                         case 'cpu':
-
+                            opChoich = CPU('https://csa2020studentapi.azurewebsites.net/rpsls');
                             break;
                     }
                     break;
