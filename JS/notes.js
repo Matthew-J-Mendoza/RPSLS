@@ -120,3 +120,30 @@ document.addEventListener('keydown', (event) => {
     }
     
 });
+
+
+
+
+
+switch(event.key){
+    case 'a':
+        //Rock
+    p1Choice = ['spock','paper'].slice()
+    break;
+    //paper
+    case 's':
+    p1Choice = ['lizard', 'scissors'].slice()
+    break;
+    case 'd':
+        //scissors
+    p1Choice = ['spock','rock']
+    break;
+    case 'f':
+        //lizard
+    p1Choice = ['scissors','rock'].slice()
+    break;
+    case 'x':
+        //spock
+    p1Choice = ['paper','lizard'].slice()
+    break;
+}
