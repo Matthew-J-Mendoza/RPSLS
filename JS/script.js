@@ -79,6 +79,12 @@ function Game() {
     // Note: Make this into one object (p1Score +'-'+opScore)
     let p1ScoreDisplay = document.getElementById('');
     let opScoreDisplay = document.getElementById('');
+    //Post P1 turn
+
+    function p1End(){
+        p1Turn = false;
+        
+    }
     //End Round----------------------------------------------
     function Judge() {
         switch (opChoich) {
@@ -109,19 +115,22 @@ function Game() {
             switch (p1Turn) {
                 case true:
 
+                p1Turn = false
                     break;
                 case false:
                     switch (Opponent) {
                         case 'p2':
-
+                            //p2 choices
+                            
+                            Judge();
                             break;
                         case 'cpu':
                             opChoich = CPU('https://csa2020studentapi.azurewebsites.net/rpsls');
+                            Judge();
                             break;
                     }
                     break;
             }
-            Judge();
         }
     });
 }
