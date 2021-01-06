@@ -75,6 +75,7 @@ function Game() {
     let Key4 = document.getElementById('Key4')
     let Key5 = document.getElementById('Key5')
 
+    // Note: Make this into one object (p1Score +'-'+opScore)
     let p1ScoreDisplay = document.getElementById('');
     let opScoreDisplay = document.getElementById('');
     //End Round----------------------------------------------
