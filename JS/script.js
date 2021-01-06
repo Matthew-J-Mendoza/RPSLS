@@ -17,8 +17,8 @@ let opScore = 0;
 let p1Choice = []
 let opChoice;
 //Acceptable inputs
-const Player1Controller = ['a', 's', 'd', 'f', 'x']
-const Player2Controller = ['j', 'k', 'l', ';', '.']
+const Player1Controller = ['a', 's', 'd', 'f', 'z']
+const Player2Controller = ['j', 'k', 'l', ';', '/']
 
 //Page Injection-------------------------------------------------------
 
@@ -145,7 +145,7 @@ function Game() {
                         console.log(`player 1 chose: lizard`)
                         p1Choice = ['lizard', ['scissors', 'rock']].slice()
                         break;
-                    case 'x':
+                    case 'z':
                         //spock
                         console.log(`player 1 chose: spock`)
                         p1Choice = ['spock', ['paper', 'lizard']].slice()
@@ -180,7 +180,7 @@ function Game() {
                     case ';':
                         opChoich = 'lizard'
                         break;
-                    case '.':
+                    case '/':
                         opChoich = 'spock'
                         break;
                 }

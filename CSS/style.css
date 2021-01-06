@@ -2,3 +2,8 @@
     display: flex;
     align-items: center;
 }
+body{
+    background-image: url(../images/Main_Menu.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
