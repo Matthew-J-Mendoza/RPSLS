@@ -91,14 +91,15 @@ function Game() {
             case '':
                 switch (p1Choice) {
                     case '':
-                        //P1 Loss
-                        opScore++
-                        opScoreDisplay.innerText = opScore;
-                        break;
-                    default:
                         //P1 Win
                         p1Score++
                         p1ScoreDisplay.innerText = p1Score;
+                        break;
+                    default:
+                        //P1 Loss
+
+                        opScore++
+                        opScoreDisplay.innerText = opScore;
                         break;
                     //Add other outcomes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 }
@@ -112,6 +113,7 @@ function Game() {
 
     document.addEventListener('keydown', (event) => {
         if (inSession === true) {
+            //idea: p1 choice will become an array with with the choices weaknesses, if p1Choice doesn't include opChoice, p1 score goes up
             switch (p1Turn) {
                 case true:
 
