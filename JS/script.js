@@ -36,11 +36,11 @@ async function CPU(url) {
 }
 //Menu Buttons---------------------------------------------------------
 cpuBtn.addEventListener('click', function () {
-    Opponent = 'cpu';
+    Opponent = 'CPU';
     Mode();
 });
 playerBtn.addEventListener('click', function () {
-    Opponent = 'p2';
+    Opponent = 'Player 2';
     Mode();
 });
 //Mode-------------------------------------------------------------
@@ -49,10 +49,10 @@ function Mode() {
     console.log(`Opponent is ${Opponent}`)
     //Note: Set time out for getting elments and eventListeners
     setTimeout(function () {
-        let Short = document.getElementById('Short2')
+        let Short = document.getElementById('Short')
         let Standard = document.getElementById('Standard')
         let Extended = document.getElementById('Extended')
-
+        document.getElementById('opType').innerText = Opponent;
         //1 win
         Short.addEventListener('click', function () {
             scoreLimit = 1;
@@ -77,7 +77,7 @@ function Game() {
     console.log(`score: ${p1Score} - ${opScore}`)
     p1Turn = true;
     inSession = true;
-    NextPage('../pages/g.html');
+    NextPage('../pages/Game.html');
     setTimeout(function () {
         let whosTurn = document.getElementById('');
 
@@ -152,7 +152,7 @@ function Game() {
                         break;
                 }
                 p1Turn = false
-                if (Opponent === 'cpu') {
+                if (Opponent === 'CPU') {
                     console.log('CPU turn');
                     CPU('https://csa2020studentapi.azurewebsites.net/rpsls');
                     setTimeout(function () {
@@ -165,7 +165,7 @@ function Game() {
             } else {
                 console.log('Invalid Input')
             }
-        } else if(Opponent === 'p2'){
+        } else if(Opponent === 'Player 2'){
             if (Player2Controller.includes(event.key)) {
                 switch (event.key) {
                     case 'j':
