@@ -1,3 +1,4 @@
+let audio = new Audio('../audio/Music.mp3');
 //Global Variables=----------------------------------------------------
 //Opponent
 let playerBtn = document.getElementById('playerBtn');
@@ -5,6 +6,8 @@ let cpuBtn = document.getElementById('cpuBtn');
 let Opponent;
 //Mode
 let scoreLimit = 0;
+let RoundCount = 1;
+let RoundLimit = 0;
 //Game
 let inSession = false;
 let p1Turn = false;
@@ -19,6 +22,11 @@ let opChoice;
 //Acceptable inputs
 const Player1Controller = ['a', 's', 'd', 'f', 'z']
 const Player2Controller = ['j', 'k', 'l', ';', '/']
+
+// setTimeout(() =>{
+//     audio.play()
+//     audio.volume = .05
+// },100)
 
 //Page Injection-------------------------------------------------------
 
@@ -45,6 +53,7 @@ playerBtn.addEventListener('click', function () {
 });
 //Mode-------------------------------------------------------------
 function Mode() {
+    document.getElementById('opType').innerText = Opponent;
     NextPage('../pages/Mode.html');
     console.log(`Opponent is ${Opponent}`)
     //Note: Set time out for getting elments and eventListeners
@@ -52,21 +61,23 @@ function Mode() {
         let Short = document.getElementById('Short')
         let Standard = document.getElementById('Standard')
         let Extended = document.getElementById('Extended')
-        document.getElementById('opType').innerText = Opponent;
         //1 win
         Short.addEventListener('click', function () {
             scoreLimit = 1;
+
             console.log('it works')
             Game();
         })
         //3 out of 5
         Standard.addEventListener('click', function () {
             scoreLimit = 3;
+            RoundLimit = 5;
             Game();
         })
         //4 out of 7
         Extended.addEventListener('click', function () {
             scoreLimit = 4;
+            RoundLimit = 7;
             Game();
         })
     }, 500);
@@ -79,16 +90,25 @@ function Game() {
     inSession = true;
     NextPage('../pages/Game.html');
     setTimeout(function () {
-        let whosTurn = document.getElementById('');
-
+        let whosTurn = document.getElementById('whosTurn');
+        let resultsBox = document.getElementById('resultsBox')
+        let opTag = document.getElementById('opTag')
+        let p1Tag = document.getElementById('p1Tag')
+        let p1Hand = document.getElementById('p1Hand');
+        let opHand = document.getElementById('opHand');
+        let Rounds = document.getElementById('Rounds');
+        let roundResult = document.getElementById('roundResult')
         let Key1 = document.getElementById('Key1');
         let Key2 = document.getElementById('Key2');
         let Key3 = document.getElementById('Key3');
         let Key4 = document.getElementById('Key4');
         let Key5 = document.getElementById('Key5');
         // Note: Make this into one object (p1Score +'-'+opScore)
-        let p1ScoreDisplay = document.getElementById('');
-        let opScoreDisplay = document.getElementById('');
+        let ScoreDisplay = document.getElementById('ScoreDisplay');
+        Rounds.innerText = `Round ${RoundCount}/${RoundLimit}`
+        if (scoreLimit === 1) {
+            Rounds.innerText = `Until someone wins`
+        }
     }, 500);
     //Post P1 turn
 
@@ -97,18 +117,82 @@ function Game() {
 
     }
     //End Round----------------------------------------------
+    function Keys(k1, k2, k3, k4, k5) {
+        Key1.innerText = k1
+        Key2.innerText = k2
+        Key3.innerText = k3
+        Key4.innerText = k4
+        Key5.innerText = k5
+    }
+    function chosenHand() {
+        switch (p1Choice[0]) {
+            case 'rock':
+                p1Hand.className = 'far fa-hand-rock text-white'
+                break;
+            case 'paper':
+                p1Hand.className = 'far fa-hand-paper text-white'
+                break;
+            case 'scissors':
+                p1Hand.className = 'far fa-hand-scissors text-white'
+                break;
+            case 'lizard':
+                p1Hand.className = 'far fa-hand-lizard text-white'
+                break;
+            case 'spock':
+                p1Hand.className = 'far fa-hand-spock text-white'
+                break;
+        }
+        switch (opChoich) {
+            case 'rock':
+                opHand.className = 'far fa-hand-rock text-white'
+                break;
+            case 'paper':
+                opHand.className = 'far fa-hand-paper text-white'
+                break;
+            case 'scissors':
+                opHand.className = 'far fa-hand-scissors text-white'
+                break;
+            case 'lizard':
+                opHand.className = 'far fa-hand-lizard text-white'
+                break;
+            case 'spock':
+                opHand.className = 'far fa-hand-spock text-white'
+                break;
+        }
+    }
+    function ResultDipslay() {
+        chosenHand()
+        opTag.innerText = Opponent;
+        resultsBox.classList.add("results")
+        p1Tag.innerText = 'Player 1'
+        ScoreDisplay.innerText = `${p1Score} - ${opScore}`
+        if (scoreLimit > 1) {
+            if(RoundCount >= RoundLimit || p1Score >= scoreLimit || opScore >= scoreLimit){
+                RoundCount++
+                
+                    p1Turn = true;
+                
+            } else{
+                p1Turn = false;
+                p2Turn = false;
+            }
+            Rounds.innerText = `Round ${RoundCount}/${RoundLimit}`
+        }
+
+    }
     function Judge() {
         if (p1Choice[1].includes(opChoich)) {
-            console.log('OP Wins')
+            roundResult.innerText = 'OP beats P1';
             opScore += 1;
         } else if (p1Choice[0] === opChoich) {
-            console.log('tie!!!!!!!!!!!!!!!!!!!!!!!')
+            roundResult.innerText = 'Tie';
         } else {
-            console.log('P1 Wins')
+            roundResult.innerText = 'P1 beats OP';
             p1Score += 1;
         }
-        p1Turn = true;
-        console.log(`score: ${p1Score} - ${opScore}`)
+        whosTurn.innerText = `Player Turn..`
+        ResultDipslay()
+
         if (p1Score === scoreLimit || opScore === scoreLimit) {
             inSession = false;
             p1Turn = false
@@ -116,11 +200,30 @@ function Game() {
             setTimeout(function () {
                 location.reload();
             }, 5000)
+        } else if (scoreLimit != 1) {
+            if (RoundCount === RoundLimit) {
+                if (p1Score > opScore) {
+                    console.log('P1 wins');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 5000)
+                } else if (p1Score < opScore) {
+                    console.log('OP wins');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 5000)
+                } else if (p1Score === opScore) {
+                    console.log('This is a tie boys!')
+                    setTimeout(function () {
+                        location.reload();
+                    }, 5000)
+                }
+            }
         }
     }
     //-----------------------Controler----------------------------------
 
-    thing.addEventListener('keydown', function (event) {
+    document.addEventListener('keydown', function (event) {
         if (p1Turn === true) {
             console.log(event.key)
             if (Player1Controller.includes(event.key)) {
@@ -150,8 +253,9 @@ function Game() {
                         console.log(`player 1 chose: spock`)
                         p1Choice = ['spock', ['paper', 'lizard']].slice()
                         break;
-                }
-                p1Turn = false
+                    }
+                    p1Turn = false
+                    whosTurn.innerText = `${Opponent} Turn..`
                 if (Opponent === 'CPU') {
                     console.log('CPU turn');
                     CPU('https://csa2020studentapi.azurewebsites.net/rpsls');
@@ -159,13 +263,15 @@ function Game() {
                         Judge()
                         console.log('CPU chose: ' + opChoich)
                     }, 2000);
-                } else{
+                } else {
+                    Keys('J', 'K', 'L', ';', '/')
                     p2Turn = true
+
                 }
             } else {
                 console.log('Invalid Input')
             }
-        } else if(Opponent === 'Player 2'){
+        } else if (Opponent === 'Player 2') {
             if (Player2Controller.includes(event.key)) {
                 switch (event.key) {
                     case 'j':
@@ -184,11 +290,13 @@ function Game() {
                         opChoich = 'spock'
                         break;
                 }
+                Keys('A', 'S', 'D', 'F', 'Z')
                 Judge();
                 p2Turn = false
-        } else{
-            console.log('Invalid Input')
+            } else {
+                console.log('Invalid Input')
+            }
         }
-    }
     });
 }
+

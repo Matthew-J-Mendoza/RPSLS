@@ -3,12 +3,13 @@
     align-items: center;
 }
 body{
-    background-image: url(../images/Menu.gif);
+    background-image: url(../images/bleh.gif);
 
     background-color: rgba(0, 0, 0, .1);
     background-repeat: no-repeat;
     background-size: cover;
     font-family: 'VT323', monospace;
+    filter: blur(.7px);
 }
 .box{
     background-color: black;
@@ -16,7 +17,7 @@ body{
     height: 200px;
     width: 200px;
     cursor: pointer;
-    transition: .5s ease;
+    transition: .5s ease-in;
     
 
 }
@@ -27,7 +28,7 @@ body{
     width: 225px;
     transform: translate(0, -1rem);
     box-shadow: 0px 0px 4rem #fca0ff;
-
+    
 }
 .icon{
     font-size: 4rem;
@@ -40,4 +41,14 @@ body{
 }
 .results{
     background-color: rgb(0, 0, 0,.8);
+}
+.title{
+    text-shadow: 0px 3px 3px #ff00dd;
+    font-size: 4rem;
+}
+#p1Hand{
+    font-size: 2.5rem;
+}
+#opHand{
+    font-size: 2.5rem;
 }
