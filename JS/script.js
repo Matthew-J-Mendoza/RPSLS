@@ -12,7 +12,7 @@ let RoundLimit = 0;
 let inSession = false;
 let p1Turn = false;
 let p2Turn = false;
-
+let winnerString = '';
 //Score
 let p1Score = 0;
 let opScore = 0;
@@ -23,10 +23,6 @@ let opChoice;
 const Player1Controller = ['a', 's', 'd', 'f', 'z']
 const Player2Controller = ['j', 'k', 'l', ';', '/']
 
-// setTimeout(() =>{
-//     audio.play()
-//     audio.volume = .05
-// },100)
 
 //Page Injection-------------------------------------------------------
 
@@ -103,6 +99,8 @@ function Game() {
         let Key3 = document.getElementById('Key3');
         let Key4 = document.getElementById('Key4');
         let Key5 = document.getElementById('Key5');
+        let symbol = document.getElementById('symbol')
+        let RoundFinish = document.getElementById('RoundFinish')
         // Note: Make this into one object (p1Score +'-'+opScore)
         let ScoreDisplay = document.getElementById('ScoreDisplay');
         Rounds.innerText = `Round ${RoundCount}/${RoundLimit}`
@@ -167,14 +165,11 @@ function Game() {
         p1Tag.innerText = 'Player 1'
         ScoreDisplay.innerText = `${p1Score} - ${opScore}`
         if (scoreLimit > 1) {
-            if(RoundCount >= RoundLimit || p1Score >= scoreLimit || opScore >= scoreLimit){
+            if(RoundCount != RoundLimit){
                 RoundCount++
-                
-                    p1Turn = true;
-                
-            } else{
-                p1Turn = false;
-                p2Turn = false;
+                p1Turn = true
+            }else{
+                inSession = false;
             }
             Rounds.innerText = `Round ${RoundCount}/${RoundLimit}`
         }
@@ -182,49 +177,45 @@ function Game() {
     }
     function Judge() {
         if (p1Choice[1].includes(opChoich)) {
-            roundResult.innerText = 'OP beats P1';
+            roundResult.innerText = `${Opponent} beats Player 1`;
+            symbol.innerText ='<'
             opScore += 1;
         } else if (p1Choice[0] === opChoich) {
             roundResult.innerText = 'Tie';
+            symbol.innerText = '='
         } else {
-            roundResult.innerText = 'P1 beats OP';
+            roundResult.innerText = `Player 1 beats ${Opponent}`;
+            symbol.innerText = '>'
             p1Score += 1;
         }
-        whosTurn.innerText = `Player Turn..`
+        whosTurn.innerText = `Player 1's Turn..`
+        
         ResultDipslay()
 
-        if (p1Score === scoreLimit || opScore === scoreLimit) {
+        if (p1Score === scoreLimit || opScore === scoreLimit || RoundCount === RoundLimit) {
             inSession = false;
-            p1Turn = false
+            //p1Turn = false
             console.log('Game is done')
-            setTimeout(function () {
-                location.reload();
-            }, 5000)
-        } else if (scoreLimit != 1) {
-            if (RoundCount === RoundLimit) {
-                if (p1Score > opScore) {
-                    console.log('P1 wins');
-                    setTimeout(function () {
-                        location.reload();
-                    }, 5000)
-                } else if (p1Score < opScore) {
-                    console.log('OP wins');
-                    setTimeout(function () {
-                        location.reload();
-                    }, 5000)
-                } else if (p1Score === opScore) {
-                    console.log('This is a tie boys!')
-                    setTimeout(function () {
-                        location.reload();
-                    }, 5000)
-                }
+            if(p1Score > opScore){
+                winnerString = 'Player 1'
+            } else{
+                winnerString = Opponent
             }
+            RoundFinish.innerText = 'Game has ended!'
+            setTimeout(function () {
+                endScreen();
+            }, 5000)
+        } else{
+            RoundFinish.innerText = 'Next Round';
+            setTimeout(function(){
+                RoundFinish.innerText = ''
+            },2000)
         }
     }
     //-----------------------Controler----------------------------------
 
     document.addEventListener('keydown', function (event) {
-        if (p1Turn === true) {
+        if (p1Turn === true && inSession === true) {
             console.log(event.key)
             if (Player1Controller.includes(event.key)) {
                 switch (event.key) {
@@ -255,7 +246,7 @@ function Game() {
                         break;
                     }
                     p1Turn = false
-                    whosTurn.innerText = `${Opponent} Turn..`
+                    whosTurn.innerText = `${Opponent}'s Turn..`
                 if (Opponent === 'CPU') {
                     console.log('CPU turn');
                     CPU('https://csa2020studentapi.azurewebsites.net/rpsls');
@@ -271,7 +262,7 @@ function Game() {
             } else {
                 console.log('Invalid Input')
             }
-        } else if (Opponent === 'Player 2') {
+        } else if (Opponent === 'Player 2' && inSession === true) {
             if (Player2Controller.includes(event.key)) {
                 switch (event.key) {
                     case 'j':
@@ -300,3 +291,25 @@ function Game() {
     });
 }
 
+//----------endGame-------
+
+function endScreen(){
+    NextPage('../pages/EndScreen.html');
+    setTimeout(function(){
+        let finalScore = document.getElementById('finalScore');
+        let refresh = document.getElementById('refresh');
+        let winner = document.getElementById('winner');
+        let winOrTie = document.getElementById('winOrTie')
+
+        if(p1Score === opScore){
+            winOrTie.innerText = 'Tie'
+        } else{
+            winOrTie.innerText = 'Is the winner'
+            winner.innerText = winnerString
+        }
+        finalScore.innerText = `${p1Score} - ${opScore}`
+        refresh.addEventListener('click',function(){
+            location.reload();
+        })
+    },500)
+}

@@ -1,6 +1,5 @@
-.t{
-    display: flex;
-    align-items: center;
+#thing{
+    filter: blur(.7px);
 }
 body{
     background-image: url(../images/bleh.gif);
@@ -9,7 +8,6 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     font-family: 'VT323', monospace;
-    filter: blur(.7px);
 }
 .box{
     background-color: black;
@@ -51,4 +49,19 @@ body{
 }
 #opHand{
     font-size: 2.5rem;
+}
+.option{
+    background-color: black;
+    outline: white 3px solid;
+    cursor: pointer;
+    transition: .5s ease;
+}
+.option:hover{
+    background-color: white;
+    color: black;
+    
+
+}
+p{
+    font-size: 1.5rem;
 }
